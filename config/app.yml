@@ -1,0 +1,18 @@
+COMMON: &common
+  DEBUG: False
+  SQLALCHEMY_TRACK_MODIFICATIONS: False
+
+development:
+  <<: *common
+  DEBUG: True
+#  SQLALCHEMY_DATABASE_URI: 'sqlite://'
+#  SQLALCHEMY_DATABASE_URI: 'sqlite:///device_db.sqlite'
+  SQLALCHEMY_DATABASE_URI: 'mysql://root2:AXProduct2024@127.0.0.1:3306/fitnessdb'
+
+production:
+  <<: *common
+  SQLALCHEMY_DATABASE_URI: 'mysql://root:AXProduct2024@localhost/fitnessdb'
+
+ADDITIONAL_CONFIG:
+  MYSQL_ROOT_USER: root
+  MYSQL_ROOT_PASSWORD: AXProduct2024
