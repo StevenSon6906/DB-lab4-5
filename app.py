@@ -6,8 +6,8 @@ import yaml
 
 from my_project import create_app
 
-DEVELOPMENT_PORT = 1401
-PRODUCTION_PORT = 1401
+DEVELOPMENT_PORT = 8080
+PRODUCTION_PORT = 8080
 HOST = "0.0.0.0"
 DEVELOPMENT = "development"
 PRODUCTION = "production"
