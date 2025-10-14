@@ -32,18 +32,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "StevenSon6906"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;StevenSon6906&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/StevenSon6906/DB-lab4-5.git",
-    "accountId": "dd2bbd88-2aee-4a46-838f-1eeba5359cbd"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/StevenSon6906/DB-lab4-5.git&quot;,
+    &quot;accountId&quot;: &quot;dd2bbd88-2aee-4a46-838f-1eeba5359cbd&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -116,7 +116,8 @@
       <workItem from="1759475240320" duration="459000" />
       <workItem from="1759475711945" duration="1229000" />
       <workItem from="1759476948822" duration="5050000" />
-      <workItem from="1759862586371" duration="3275000" />
+      <workItem from="1759862586371" duration="4535000" />
+      <workItem from="1760449634158" duration="707000" />
     </task>
     <servers />
   </component>
