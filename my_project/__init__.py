@@ -72,20 +72,20 @@ END;
         db.session.commit()
 
 #A-парамт
-# def _init_program_exercise(app: Flask, program_id: int, exercise_id: int, target_value: int) -> None:
-#     with app.app_context():
-#         db.session.execute(
-#             """
-#             INSERT INTO program_exercises (program_id, exercise_id, target_value)
-#             VALUES (:program_id, :exercise_id, :target_value)
-#             """,
-#             {
-#                 'program_id': program_id,
-#                 'exercise_id': exercise_id,
-#                 'target_value': target_value
-#             }
-#         )
-#         db.session.commit()
+def _init_program_exercise(app: Flask, program_id: int, exercise_id: int, target_value: int) -> None:
+    with app.app_context():
+        db.session.execute(
+            """
+            INSERT INTO program_exercises (program_id, exercise_id, target_value)
+            VALUES (:program_id, :exercise_id, :target_value)
+            """,
+            {
+                'program_id': program_id,
+                'exercise_id': exercise_id,
+                'target_value': target_value
+            }
+        )
+        db.session.commit()
 
 #B-M:M-зроблено
 def _init_procedures(app: Flask) -> None:
@@ -219,12 +219,12 @@ def _init_swagger(app: Flask) -> None:
                     doc='/swagger')
 
     # Models
-    #exercise_model = restx_api.model('Exercise', {
-    #    'id': fields.Integer(readonly=True, description='Exercise identifier'),
-    #    'name': fields.String(required=True, description='Exercise name'),
-    #    'description': fields.String(description='Exercise description'),
-    #    'unit': fields.String(description='Exercise measurement unit (e.g., reps, kg, minutes)')
-    #})
+    exercise_model = restx_api.model('Exercise', {
+       'id': fields.Integer(readonly=True, description='Exercise identifier'),
+       'name': fields.String(required=True, description='Exercise name'),
+       'description': fields.String(description='Exercise description'),
+       'unit': fields.String(description='Exercise measurement unit (e.g., reps, kg, minutes)')
+    })
 
     program_model = restx_api.model('Program', {
         'id': fields.Integer(readonly=True, description='Program identifier'),
@@ -258,7 +258,7 @@ def _init_swagger(app: Flask) -> None:
     })
 
     # Namespaces
-    #exercise_ns = restx_api.namespace('exercises', description='Exercise operations')
+    exercise_ns = restx_api.namespace('exercises', description='Exercise operations')
     program_ns = restx_api.namespace('programs', description='Program operations')
     gender_ns = restx_api.namespace('genders', description='Gender operations')
     trainer_ns = restx_api.namespace('trainers', description='Trainer operations')
@@ -266,52 +266,52 @@ def _init_swagger(app: Flask) -> None:
     program_exercise_ns = restx_api.namespace('program-exercises', description='Program Exercise operations')
 
     # Exercise endpoints
-    # @exercise_ns.route('/')
-    # class ExerciseList(Resource):
-    #     @exercise_ns.doc('list_exercises')
-    #     @exercise_ns.marshal_list_with(exercise_model)
-    #     def get(self):
-    #         """List all exercises"""
-    #         from my_project.auth.domain import Exercise
-    #         return Exercise.query.all()
-    #
-    #     @exercise_ns.doc('create_exercise')
-    #     @exercise_ns.expect(exercise_model, validate=True)
-    #     @exercise_ns.marshal_with(exercise_model, code=201)
-    #     def post(self):
-    #         """Create a new exercise"""
-    #         from flask import request
-    #         from my_project.auth.domain import Exercise
-    #         payload = request.get_json(force=True)
-    #         exercise = Exercise(
-    #             name=payload['name'],
-    #             description=payload.get('description'),
-    #             unit=payload.get('unit')
-    #         )
-    #         db.session.add(exercise)
-    #         db.session.commit()
-    #         return exercise, 201
-    #
-    # @exercise_ns.route('/<int:id>')
-    # class Exercise(Resource):
-    #     @exercise_ns.doc('get_exercise')
-    #     @exercise_ns.marshal_with(exercise_model)
-    #     def get(self, id):
-    #         """Get an exercise by ID"""
-    #         return {}
-    #
-    #     @exercise_ns.doc('update_exercise')
-    #     @exercise_ns.expect(exercise_model)
-    #     @exercise_ns.marshal_with(exercise_model)
-    #     def put(self, id):
-    #         """Update an exercise"""
-    #         return {}
-    #
-    #     @exercise_ns.doc('delete_exercise')
-    #     @exercise_ns.response(204, 'Exercise deleted')
-    #     def delete(self, id):
-    #         """Delete an exercise"""
-    #         return '', 204
+    @exercise_ns.route('/')
+    class ExerciseList(Resource):
+        @exercise_ns.doc('list_exercises')
+        @exercise_ns.marshal_list_with(exercise_model)
+        def get(self):
+            """List all exercises"""
+            from my_project.auth.domain import Exercise
+            return Exercise.query.all()
+
+        @exercise_ns.doc('create_exercise')
+        @exercise_ns.expect(exercise_model, validate=True)
+        @exercise_ns.marshal_with(exercise_model, code=201)
+        def post(self):
+            """Create a new exercise"""
+            from flask import request
+            from my_project.auth.domain import Exercise
+            payload = request.get_json(force=True)
+            exercise = Exercise(
+                name=payload['name'],
+                description=payload.get('description'),
+                unit=payload.get('unit')
+            )
+            db.session.add(exercise)
+            db.session.commit()
+            return exercise, 201
+
+    @exercise_ns.route('/<int:id>')
+    class Exercise(Resource):
+        @exercise_ns.doc('get_exercise')
+        @exercise_ns.marshal_with(exercise_model)
+        def get(self, id):
+            """Get an exercise by ID"""
+            return {}
+
+        @exercise_ns.doc('update_exercise')
+        @exercise_ns.expect(exercise_model)
+        @exercise_ns.marshal_with(exercise_model)
+        def put(self, id):
+            """Update an exercise"""
+            return {}
+
+        @exercise_ns.doc('delete_exercise')
+        @exercise_ns.response(204, 'Exercise deleted')
+        def delete(self, id):
+            """Delete an exercise"""
+            return '', 204
 
     # Program endpoints
     @program_ns.route('/')
@@ -500,76 +500,76 @@ def _init_swagger(app: Flask) -> None:
             """Delete a visitor"""
             return '', 204
 
-    # # Program Exercise endpoints
-    # @program_exercise_ns.route('/')
-    # class ProgramExerciseList(Resource):
-    #     @program_exercise_ns.doc('list_program_exercises')
-    #     @program_exercise_ns.marshal_list_with(program_exercise_model)
-    #     def get(self):
-    #         """List all program exercises"""
-    #         from my_project.auth.domain import ProgramExercise
-    #         return ProgramExercise.query.all()
-    #
-    #     @program_exercise_ns.doc('create_program_exercise')
-    #     @program_exercise_ns.expect(program_exercise_model, validate=True)
-    #     @program_exercise_ns.marshal_with(program_exercise_model, code=201)
-    #     def post(self):
-    #         """Create a new program exercise"""
-    #         from flask import request
-    #         from my_project.auth.domain import ProgramExercise
-    #         payload = request.get_json(force=True)
-    #         pe = ProgramExercise(
-    #             program_id=payload['program_id'],
-    #             exercise_id=payload['exercise_id'],
-    #             target_value=payload['target_value']
-    #         )
-    #         db.session.add(pe)
-    #         db.session.commit()
-    #         return pe, 201
-    #
-    # @program_exercise_ns.route('/<int:program_id>/<int:exercise_id>')
-    # class ProgramExercise(Resource):
-    #     @program_exercise_ns.doc('get_program_exercise')
-    #     @program_exercise_ns.marshal_with(program_exercise_model)
-    #     def get(self, program_id, exercise_id):
-    #         """Get a program exercise by Program ID and Exercise ID"""
-    #         from my_project.auth.domain import ProgramExercise
-    #         from flask_restx import abort
-    #         pe = ProgramExercise.query.filter_by(program_id=program_id, exercise_id=exercise_id).first()
-    #         if not pe:
-    #             abort(404, "ProgramExercise not found")
-    #         return pe
-    #
-    #     @program_exercise_ns.doc('update_program_exercise')
-    #     @program_exercise_ns.expect(program_exercise_model, validate=True)
-    #     @program_exercise_ns.marshal_with(program_exercise_model)
-    #     def put(self, program_id, exercise_id):
-    #         """Update a program exercise"""
-    #         from flask import request
-    #         from my_project.auth.domain import ProgramExercise
-    #         from flask_restx import abort
-    #         pe = ProgramExercise.query.filter_by(program_id=program_id, exercise_id=exercise_id).first()
-    #         if not pe:
-    #             abort(404, "ProgramExercise not found")
-    #         payload = request.get_json(force=True)
-    #         # Only target_value is updatable in this minimal variant
-    #         if 'target_value' in payload:
-    #             pe.target_value = payload['target_value']
-    #         db.session.commit()
-    #         return pe
-    #
-    #     @program_exercise_ns.doc('delete_program_exercise')
-    #     @program_exercise_ns.response(204, 'Program exercise deleted')
-    #     def delete(self, program_id, exercise_id):
-    #         """Delete a program exercise"""
-    #         from my_project.auth.domain import ProgramExercise
-    #         from flask_restx import abort
-    #         pe = ProgramExercise.query.filter_by(program_id=program_id, exercise_id=exercise_id).first()
-    #         if not pe:
-    #             abort(404, "ProgramExercise not found")
-    #         db.session.delete(pe)
-    #         db.session.commit()
-    #         return '', 204
+    #Program Exercise endpoints
+    @program_exercise_ns.route('/')
+    class ProgramExerciseList(Resource):
+        @program_exercise_ns.doc('list_program_exercises')
+        @program_exercise_ns.marshal_list_with(program_exercise_model)
+        def get(self):
+            """List all program exercises"""
+            from my_project.auth.domain import ProgramExercise
+            return ProgramExercise.query.all()
+
+        @program_exercise_ns.doc('create_program_exercise')
+        @program_exercise_ns.expect(program_exercise_model, validate=True)
+        @program_exercise_ns.marshal_with(program_exercise_model, code=201)
+        def post(self):
+            """Create a new program exercise"""
+            from flask import request
+            from my_project.auth.domain import ProgramExercise
+            payload = request.get_json(force=True)
+            pe = ProgramExercise(
+                program_id=payload['program_id'],
+                exercise_id=payload['exercise_id'],
+                target_value=payload['target_value']
+            )
+            db.session.add(pe)
+            db.session.commit()
+            return pe, 201
+
+    @program_exercise_ns.route('/<int:program_id>/<int:exercise_id>')
+    class ProgramExercise(Resource):
+        @program_exercise_ns.doc('get_program_exercise')
+        @program_exercise_ns.marshal_with(program_exercise_model)
+        def get(self, program_id, exercise_id):
+            """Get a program exercise by Program ID and Exercise ID"""
+            from my_project.auth.domain import ProgramExercise
+            from flask_restx import abort
+            pe = ProgramExercise.query.filter_by(program_id=program_id, exercise_id=exercise_id).first()
+            if not pe:
+                abort(404, "ProgramExercise not found")
+            return pe
+
+        @program_exercise_ns.doc('update_program_exercise')
+        @program_exercise_ns.expect(program_exercise_model, validate=True)
+        @program_exercise_ns.marshal_with(program_exercise_model)
+        def put(self, program_id, exercise_id):
+            """Update a program exercise"""
+            from flask import request
+            from my_project.auth.domain import ProgramExercise
+            from flask_restx import abort
+            pe = ProgramExercise.query.filter_by(program_id=program_id, exercise_id=exercise_id).first()
+            if not pe:
+                abort(404, "ProgramExercise not found")
+            payload = request.get_json(force=True)
+            # Only target_value is updatable in this minimal variant
+            if 'target_value' in payload:
+                pe.target_value = payload['target_value']
+            db.session.commit()
+            return pe
+
+        @program_exercise_ns.doc('delete_program_exercise')
+        @program_exercise_ns.response(204, 'Program exercise deleted')
+        def delete(self, program_id, exercise_id):
+            """Delete a program exercise"""
+            from my_project.auth.domain import ProgramExercise
+            from flask_restx import abort
+            pe = ProgramExercise.query.filter_by(program_id=program_id, exercise_id=exercise_id).first()
+            if not pe:
+                abort(404, "ProgramExercise not found")
+            db.session.delete(pe)
+            db.session.commit()
+            return '', 204
 def _init_db(app: Flask) -> None:
     """
     Initializes DB with SQLAlchemy
