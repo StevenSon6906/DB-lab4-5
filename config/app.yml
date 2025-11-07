@@ -7,11 +7,11 @@ development:
   DEBUG: True
 #  SQLALCHEMY_DATABASE_URI: 'sqlite://'
 #  SQLALCHEMY_DATABASE_URI: 'sqlite:///device_db.sqlite'
-  SQLALCHEMY_DATABASE_URI: 'mysql://zopa228anal1488:RHCagbLNA2X8neP@lab1server.mysql.database.azure.com/fitness_db'
+  SQLALCHEMY_DATABASE_URI: 'mysql://azureuser:*6$8tLX_CDU2X.6@lab1server.mysql.database.azure.com/fitness_db'
 
 production:
   <<: *common
-  SQLALCHEMY_DATABASE_URI: 'mysql://zopa228anal1488:RHCagbLNA2X8neP@lab1server.mysql.database.azure.com/fitness_db'
+  SQLALCHEMY_DATABASE_URI: 'mysql://azureuser:*6$8tLX_CDU2X.6@lab1server.mysql.database.azure.com/fitness_db'
 
 ADDITIONAL_CONFIG:
   MYSQL_ROOT_USER: root
